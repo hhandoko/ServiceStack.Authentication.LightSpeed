@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<model xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.1.0.0" name="UserAuthModel" targetNamespace="ServiceStack.Authentication.LightSpeed" databaseProvider="SqlServer2012" connectionString="Server=(local)\SQL12;Database=ss_auth;User Id=ss_auth_user;Password=S3cret;" pluralizedInDatabase="false" mediumTrustCompatibility="false" xmlns="http://namespaces.mindscape.co.nz/lightspeed">
+  <entities>
+    <entity name="UserAuth" identityType="Int32" cacheExpiry="0">
+      <entityProperties>
+        <entityProperty name="UserName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Email" isNullable="true" privateSetter="false">
+          <validations>
+            <emailValidation />
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="PrimaryEmail" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="PhoneNumber" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="FirstName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="LastName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="DisplayName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Company" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="BirthDate" dataType="DateTime" isNullable="true" privateSetter="false" />
+        <entityProperty name="BirthDateRaw" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Address" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Address2" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="City" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="State" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Country" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Culture" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="FullName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Gender" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Language" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="MailAddress" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Nickname" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="PostalCode" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="TimeZone" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Salt" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="PasswordHash" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="DigestHa1Hash" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Roles" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Permissions" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="CreatedDate" dataType="DateTime" privateSetter="false" />
+        <entityProperty name="ModifiedDate" dataType="DateTime" privateSetter="false" />
+        <entityProperty name="InvalidLoginAttempts" dataType="Int32" privateSetter="false" />
+        <entityProperty name="LastLoginAttempt" dataType="DateTime" isNullable="true" privateSetter="false" />
+        <entityProperty name="LockedDate" dataType="DateTime" isNullable="true" privateSetter="false" />
+        <entityProperty name="RecoveryToken" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="RefId" dataType="Int32" isNullable="true" privateSetter="false" />
+        <entityProperty name="RefIdStr" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Meta" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+      </entityProperties>
+      <oneToManyAssociations>
+        <oneToManyAssociation Id="5ec140e5-7628-421f-b65a-5983fbd9afa7" collectionName="UserAuthDetails" backreferenceName="UserAuth" isNullable="false">
+          <entityMoniker name="/UserAuthModel/UserAuthDetail" />
+        </oneToManyAssociation>
+        <oneToManyAssociation Id="2b89fc99-519b-460c-88f4-dd453798d057" collectionName="UserAuthRoles" backreferenceName="UserAuth" isNullable="false">
+          <entityMoniker name="/UserAuthModel/UserAuthRole" />
+        </oneToManyAssociation>
+      </oneToManyAssociations>
+    </entity>
+    <entity name="UserAuthRole" identityType="Int32" cacheExpiry="0">
+      <entityProperties>
+        <entityProperty name="Role" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Permission" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="CreatedDate" dataType="DateTime" privateSetter="false" />
+        <entityProperty name="ModifiedDate" dataType="DateTime" privateSetter="false" />
+        <entityProperty name="RefId" dataType="Int32" isNullable="true" privateSetter="false" />
+        <entityProperty name="RefIdStr" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Meta" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+      </entityProperties>
+    </entity>
+    <entity name="UserAuthDetail" identityType="Int32" cacheExpiry="0" tableName="UserAuthDetails">
+      <entityProperties>
+        <entityProperty name="Provider" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="UserId" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="UserName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="FullName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="DisplayName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="FirstName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="LastName" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Company" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Email" isNullable="true" privateSetter="false">
+          <validations>
+            <emailValidation />
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="PhoneNumber" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="BirthDate" dataType="DateTime" isNullable="true" privateSetter="false" />
+        <entityProperty name="BirthDateRaw" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Address" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Address2" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="City" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="State" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Country" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Culture" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Gender" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Language" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="MailAddress" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Nickname" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="PostalCode" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="TimeZone" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="RefreshToken" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="RefreshTokenExpiry" dataType="DateTime" isNullable="true" privateSetter="false" />
+        <entityProperty name="RequestToken" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="RequestTokenSecret" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Items" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="AccessToken" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="AccessTokenSecret" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="CreatedDate" dataType="DateTime" privateSetter="false" />
+        <entityProperty name="ModifiedDate" dataType="DateTime" privateSetter="false" />
+        <entityProperty name="RefId" dataType="Int32" isNullable="true" privateSetter="false" />
+        <entityProperty name="RefIdStr" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+        <entityProperty name="Meta" isNullable="true" privateSetter="false">
+          <validations>
+            <lengthValidation minimumLength="0" maximumLength="8000" />
+          </validations>
+        </entityProperty>
+      </entityProperties>
+    </entity>
+  </entities>
+</model>
