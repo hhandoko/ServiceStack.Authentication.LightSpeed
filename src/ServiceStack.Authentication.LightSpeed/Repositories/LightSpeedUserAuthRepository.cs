@@ -61,14 +61,6 @@ namespace ServiceStack.Authentication.LightSpeed
         /// Gets or sets the unit of work.
         /// </summary>
         private UserAuthModelUnitOfWork UnitOfWork { get; set; }
-        
-//        /// <summary>
-//        /// Gets the current Unit of Work scope.
-//        /// </summary>
-//        private static UserAuthModelUnitOfWork UnitOfWork
-//        {
-//            get { return scope.Current; }
-//        }
 
         /// <summary>
         /// Get a UserAuth by its id.
@@ -221,16 +213,13 @@ namespace ServiceStack.Authentication.LightSpeed
                 ?? new LightSpeed.UserAuth();
 
             // Try and get from the OAuth table
-            var oauthProvider = this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider);
-            if (oauthProvider == null)
-            {
-                oauthProvider =
-                    new LightSpeed.UserAuthDetail
-                        {
-                            UserId = tokens.UserId,
-                            Provider = tokens.Provider
-                        };
-            }
+            var oauthProvider =
+                this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider)
+                ?? new LightSpeed.UserAuthDetail
+                       {
+                           UserId = tokens.UserId,
+                           Provider = tokens.Provider
+                       };
 
             oauthProvider.PopulateMissing(tokens);
 
@@ -491,6 +480,14 @@ namespace ServiceStack.Authentication.LightSpeed
             }
         }
 
+        /// <summary>
+        /// Assert no user exist with given username and email of the new user.
+        /// </summary>
+        /// <param name="newUser">The new user.</param>
+        /// <param name="exceptForExistingUser">The existing user to except.</param>
+        /// <exception cref="ArgumentException">
+        /// Exception thrown if username or email already exists.
+        /// </exception>
         private void AssertNoExistingUser(IUserAuth newUser, IUserAuth exceptForExistingUser = null)
         {
             // Check for existing username

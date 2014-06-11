@@ -373,19 +373,7 @@ namespace ServiceStack.Authentication.LightSpeed
       set { Set(ref _digestHa1Hash, value, "DigestHa1Hash"); }
     }
 
-    [System.Diagnostics.DebuggerNonUserCode]
-    public string Roles
-    {
-      get { return Get(ref _roles, "Roles"); }
-      set { Set(ref _roles, value, "Roles"); }
-    }
 
-    [System.Diagnostics.DebuggerNonUserCode]
-    public string Permissions
-    {
-      get { return Get(ref _permissions, "Permissions"); }
-      set { Set(ref _permissions, value, "Permissions"); }
-    }
 
     [System.Diagnostics.DebuggerNonUserCode]
     public System.DateTime CreatedDate
@@ -443,12 +431,6 @@ namespace ServiceStack.Authentication.LightSpeed
       set { Set(ref _refIdStr, value, "RefIdStr"); }
     }
 
-    [System.Diagnostics.DebuggerNonUserCode]
-    public string Meta
-    {
-      get { return Get(ref _meta, "Meta"); }
-      set { Set(ref _meta, value, "Meta"); }
-    }
 
     #endregion
   }
@@ -955,12 +937,6 @@ namespace ServiceStack.Authentication.LightSpeed
       set { Set(ref _requestTokenSecret, value, "RequestTokenSecret"); }
     }
 
-    [System.Diagnostics.DebuggerNonUserCode]
-    public string Items
-    {
-      get { return Get(ref _items, "Items"); }
-      set { Set(ref _items, value, "Items"); }
-    }
 
     [System.Diagnostics.DebuggerNonUserCode]
     public string AccessToken
@@ -1004,12 +980,6 @@ namespace ServiceStack.Authentication.LightSpeed
       set { Set(ref _refIdStr, value, "RefIdStr"); }
     }
 
-    [System.Diagnostics.DebuggerNonUserCode]
-    public string Meta
-    {
-      get { return Get(ref _meta, "Meta"); }
-      set { Set(ref _meta, value, "Meta"); }
-    }
 
     /// <summary>Gets or sets the ID for the <see cref="UserAuth" /> property.</summary>
     [System.Diagnostics.DebuggerNonUserCode]
