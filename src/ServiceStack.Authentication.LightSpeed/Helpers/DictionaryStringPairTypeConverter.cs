@@ -11,7 +11,7 @@ namespace ServiceStack.Authentication.LightSpeed.Helpers
     /// <summary>
     /// The Dictionary type converter.
     /// </summary>
-    internal static class DictionaryStringPairTypeConverter
+    public static class DictionaryStringPairTypeConverter
     {
         /// <summary>
         /// Convert a database string field into Dictionary&lt;string, string&gt; type.

@@ -7,12 +7,18 @@
 namespace ServiceStack.Authentication.LightSpeed.Helpers
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// The Dictionary type converter.
     /// </summary>
-    internal static class StringListTypeConverter
+    public static class StringListTypeConverter
     {
+        /// <summary>
+        /// The array wrapper.
+        /// </summary>
+        private static readonly char[] ArrayWrapper = { '[', ']' };
+
         /// <summary>
         /// Convert a database string field into Dictionary&lt;string, string&gt; type.
         /// </summary>
@@ -23,7 +29,7 @@ namespace ServiceStack.Authentication.LightSpeed.Helpers
             return 
                 databaseValue.IsNullOrEmpty()
                     ? null
-                    : databaseValue.FromJsv<List<string>>();
+                    : databaseValue.Trim(ArrayWrapper).Split(',').ToList();
         }
 
         /// <summary>
@@ -33,10 +39,10 @@ namespace ServiceStack.Authentication.LightSpeed.Helpers
         /// <returns>The <see cref="object"/>.</returns>
         public static string ConvertToDatabase(IList<string> value)
         {
-            return 
-                value == null
-                    ? null
-                    : value.ToJsv();
+            return
+                value == null || value[0].IsNullOrEmpty() || value == new List<string>()
+                    ? @"[]"
+                    : string.Format(@"[""{0}""]", value.Join(@""","""));
         }
     }
 }
