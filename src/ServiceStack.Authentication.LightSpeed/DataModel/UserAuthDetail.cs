@@ -9,8 +9,7 @@ namespace ServiceStack.Authentication.LightSpeed
     using System.Collections.Generic;
 
     using ServiceStack.Auth;
-
-    using DictConvert = ServiceStack.Authentication.LightSpeed.Helpers.DictionaryStringPairTypeConverter;
+    using ServiceStack.Text;
 
     /// <summary>
     /// The user authentication details data entity.
@@ -18,12 +17,17 @@ namespace ServiceStack.Authentication.LightSpeed
     public partial class UserAuthDetail : IUserAuthDetails
     {
         /// <summary>
+        /// The serializer.
+        /// </summary>
+        private static readonly IStringSerializer Serializer = new JsvStringSerializer();
+
+        /// <summary>
         /// Gets or sets the items.
         /// </summary>
         public Dictionary<string, string> Items
         {
-            get { return DictConvert.ConvertFromDatabase(_items); }
-            set { Set(ref _items, DictConvert.ConvertToDatabase(value)); }
+            get { return Serializer.DeserializeFromString<Dictionary<string, string>>(_items); }
+            set { Set(ref _items, Serializer.SerializeToString(value)); }
         }
 
         /// <summary>
@@ -31,8 +35,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         public Dictionary<string, string> Meta
         {
-            get { return DictConvert.ConvertFromDatabase(_meta); }
-            set { Set(ref _meta, DictConvert.ConvertToDatabase(value)); }
+            get { return Serializer.DeserializeFromString<Dictionary<string, string>>(_meta); }
+            set { Set(ref _meta, Serializer.SerializeToString(value)); }
         }
     }
 }

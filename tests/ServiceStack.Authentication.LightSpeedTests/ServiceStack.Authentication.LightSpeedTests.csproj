@@ -89,7 +89,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseValueConverterTest.cs" />
     <Compile Include="LightSpeedAuthProviderCompatibilityTest.cs" />
     <Compile Include="LightSpeedAuthProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,9 +9,7 @@ namespace ServiceStack.Authentication.LightSpeed
     using System.Collections.Generic;
 
     using ServiceStack.Auth;
-
-    using DictConvert = ServiceStack.Authentication.LightSpeed.Helpers.DictionaryStringPairTypeConverter;
-    using ListConvert = ServiceStack.Authentication.LightSpeed.Helpers.StringListTypeConverter;
+    using ServiceStack.Text;
 
     /// <summary>
     /// The user authentication data entity.
@@ -19,12 +17,17 @@ namespace ServiceStack.Authentication.LightSpeed
     public partial class UserAuth : IUserAuth
     {
         /// <summary>
+        /// The serializer.
+        /// </summary>
+        private static readonly IStringSerializer Serializer = new JsvStringSerializer();
+
+        /// <summary>
         /// Gets or sets the permissions.
         /// </summary>
         public List<string> Permissions
         {
-            get { return ListConvert.ConvertFromDatabase(_permissions); }
-            set { Set(ref _permissions, ListConvert.ConvertToDatabase(value)); }
+            get { return Serializer.DeserializeFromString<List<string>>(_permissions); }
+            set { Set(ref _permissions, Serializer.SerializeToString(value)); }
         }
 
         /// <summary>
@@ -32,8 +35,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         public List<string> Roles
         {
-            get { return ListConvert.ConvertFromDatabase(_roles); }
-            set { Set(ref _roles, ListConvert.ConvertToDatabase(value)); }
+            get { return Serializer.DeserializeFromString<List<string>>(_roles); }
+            set { Set(ref _roles, Serializer.SerializeToString(value)); }
         }
 
         /// <summary>
@@ -41,8 +44,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         public Dictionary<string, string> Meta
         {
-            get { return DictConvert.ConvertFromDatabase(_meta); }
-            set { Set(ref _meta, DictConvert.ConvertToDatabase(value)); }
+            get { return Serializer.DeserializeFromString<Dictionary<string, string>>(_meta); }
+            set { Set(ref _meta, Serializer.SerializeToString(value)); }
         }
     }
 }

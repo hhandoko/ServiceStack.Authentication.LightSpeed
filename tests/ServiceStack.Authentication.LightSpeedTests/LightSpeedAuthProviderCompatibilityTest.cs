@@ -6,6 +6,7 @@
 
 namespace ServiceStack.Authentication.LightSpeedTests
 {
+    using System.Collections.ObjectModel;
     using System.Data;
     using System.IO;
 
@@ -76,14 +77,15 @@ namespace ServiceStack.Authentication.LightSpeedTests
             InitDbConn();
             DropAndCreateTables();
             this.InitRepositories();
+            this.SeedDbWithUsers();
         }
 
         /// <summary>
         /// Check LightSpeed read compatibility for OrmLite-created entries.
         /// </summary>
-        [TestCase("testUser0001", "testuser0001@test.com", "Abc!123")]
-        [TestCase("testUser0002", "testuser0002@test.com", "Abc!234")]
-        [TestCase("testUser0003", "testuser0003@test.com", "Abc!345")]
+        [TestCase("readTestUser0001", "readtestuser0001@test.com", "Abc!123")]
+        [TestCase("readTestUser0002", "readtestuser0002@test.com", "Abc!234")]
+        [TestCase("readTestUser0003", "readtestuser0003@test.com", "Abc!345")]
         public void CheckReadGetByUsername(string username, string email, string password)
         {
             // Arrange
@@ -106,9 +108,9 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// <summary>
         /// Check LightSpeed read compatibility for OrmLite-created entries.
         /// </summary>
-        [TestCase("testUser0004", "testuser0004@test.com", "Abc!456")]
-        [TestCase("testUser0005", "testuser0005@test.com", "Abc!567")]
-        [TestCase("testUser0006", "testuser0006@test.com", "Abc!678")]
+        [TestCase("readTestUser0004", "readtestuser0004@test.com", "Abc!456")]
+        [TestCase("readTestUser0005", "readtestuser0005@test.com", "Abc!567")]
+        [TestCase("readTestUser0006", "readtestuser0006@test.com", "Abc!678")]
         public void CheckReadGetByEmail(string username, string email, string password)
         {
             // Arrange
@@ -126,6 +128,25 @@ namespace ServiceStack.Authentication.LightSpeedTests
 
             // Assert
             Assert.AreEqual(ormLiteUser.Id, lightSpeedUser.Id);
+        }
+
+        /// <summary>
+        /// Check LightSpeed read assigned user role(s).
+        /// </summary>
+        /// <param name="role">The role.</param>
+        [TestCase("SuperAdmin")]
+        public void CheckReadAssignRole(string role)
+        {
+            // Arrange
+            var prepareUser = this.OrmLiteRepository.GetUserAuthByUserName("lsUser01");
+            this.OrmLiteRepository.AssignRoles(prepareUser, roles: new Collection<string> { role });
+
+            // Act
+            var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName("lsUser01");
+            var hasRole = lightspeedUser.Roles.Contains(role);
+
+            // Assert
+            Assert.IsTrue(hasRole);
         }
 
         /// <summary>
@@ -191,6 +212,20 @@ namespace ServiceStack.Authentication.LightSpeedTests
             // Init OrmLite and LightSpeed repository
             this.OrmLiteRepository = new OrmLiteAuthRepository(dbFactory);
             this.LightSpeedRepository = new LightSpeedUserAuthRepository(scope.Current);
+        }
+
+        /// <summary>
+        /// Seed the test db with users.
+        /// </summary>
+        private void SeedDbWithUsers()
+        {
+            this.OrmLiteRepository.CreateUserAuth(
+                new Auth.UserAuth
+                    {
+                        UserName = "lsUser01",
+                        Email = "lsUser01@test.com"
+                    },
+                    "Abc!123");
         }
     }
 }
