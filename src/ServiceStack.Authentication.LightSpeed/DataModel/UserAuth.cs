@@ -17,17 +17,25 @@ namespace ServiceStack.Authentication.LightSpeed
     public partial class UserAuth : IUserAuth
     {
         /// <summary>
-        /// The serializer.
+        /// Gets the string serializer.
         /// </summary>
-        private static readonly IStringSerializer Serializer = new JsvStringSerializer();
+        private IStringSerializer Serializer
+        {
+            get
+            {
+                return
+                    ((UserAuthModelUnitOfWork)UnitOfWork).Serializer
+                    ?? new JsvStringSerializer();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the permissions.
         /// </summary>
         public List<string> Permissions
         {
-            get { return Serializer.DeserializeFromString<List<string>>(_permissions); }
-            set { Set(ref _permissions, Serializer.SerializeToString(value)); }
+            get { return this.Serializer.DeserializeFromString<List<string>>(_permissions); }
+            set { Set(ref _permissions, this.Serializer.SerializeToString(value)); }
         }
 
         /// <summary>
@@ -35,8 +43,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         public List<string> Roles
         {
-            get { return Serializer.DeserializeFromString<List<string>>(_roles); }
-            set { Set(ref _roles, Serializer.SerializeToString(value)); }
+            get { return this.Serializer.DeserializeFromString<List<string>>(_roles); }
+            set { Set(ref _roles, this.Serializer.SerializeToString(value)); }
         }
 
         /// <summary>
@@ -44,8 +52,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         public Dictionary<string, string> Meta
         {
-            get { return Serializer.DeserializeFromString<Dictionary<string, string>>(_meta); }
-            set { Set(ref _meta, Serializer.SerializeToString(value)); }
+            get { return this.Serializer.DeserializeFromString<Dictionary<string, string>>(_meta); }
+            set { Set(ref _meta, this.Serializer.SerializeToString(value)); }
         }
     }
 }

@@ -89,7 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LightSpeedAuthProviderCompatibilityTest.cs" />
+    <Compile Include="LightSpeedAuthProviderReadCompatibilityTest.cs" />
     <Compile Include="LightSpeedAuthProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

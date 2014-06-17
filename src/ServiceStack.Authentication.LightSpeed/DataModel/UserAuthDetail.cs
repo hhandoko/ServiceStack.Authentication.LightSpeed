@@ -17,17 +17,25 @@ namespace ServiceStack.Authentication.LightSpeed
     public partial class UserAuthDetail : IUserAuthDetails
     {
         /// <summary>
-        /// The serializer.
+        /// Gets the string serializer.
         /// </summary>
-        private static readonly IStringSerializer Serializer = new JsvStringSerializer();
+        private IStringSerializer Serializer
+        {
+            get
+            {
+                return
+                    ((UserAuthModelUnitOfWork)UnitOfWork).Serializer
+                    ?? new JsvStringSerializer();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
         public Dictionary<string, string> Items
         {
-            get { return Serializer.DeserializeFromString<Dictionary<string, string>>(_items); }
-            set { Set(ref _items, Serializer.SerializeToString(value)); }
+            get { return this.Serializer.DeserializeFromString<Dictionary<string, string>>(_items); }
+            set { Set(ref _items, this.Serializer.SerializeToString(value)); }
         }
 
         /// <summary>
@@ -35,8 +43,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         public Dictionary<string, string> Meta
         {
-            get { return Serializer.DeserializeFromString<Dictionary<string, string>>(_meta); }
-            set { Set(ref _meta, Serializer.SerializeToString(value)); }
+            get { return this.Serializer.DeserializeFromString<Dictionary<string, string>>(_meta); }
+            set { Set(ref _meta, this.Serializer.SerializeToString(value)); }
         }
     }
 }
