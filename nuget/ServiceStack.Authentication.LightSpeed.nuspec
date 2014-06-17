@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>ServiceStack.Authentication.LightSpeed</id>
+        <version>$version$</version>
+        <title>LightSpeed ORM provider for ServiceStack.Authentication (Unofficial)</title>
+        <authors>Herdy Handoko</authors>
+        <owners>Herdy Handoko</owners>
+        <licenseUrl>https://github.com/hhandoko/ServiceStack.Authentication.LightSpeed/blob/master/License.txt?raw=true</licenseUrl>
+        <projectUrl>https://github.com/hhandoko/ServiceStack.Authentication.LightSpeed</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>An unofficial LightSpeed ORM provider for ServiceStack authentication.</description>
+        <copyright>2014 ServiceStack.Authentication.LightSpeed contributors</copyright>
+        <language>en-AU</language>
+        <tags>ServiceStack LightSpeed</tags>
+        <dependencies>
+            <group>
+                <dependency id="ServiceStack" version="4.0" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\release\latest\ServiceStack.Authentication.LightSpeed\lib\ServiceStack.Authentication.LightSpeed.dll" target="lib\net45\ServiceStack.Authentication.LightSpeed.dll" />
+        <file src="..\release\latest\ServiceStack.Authentication.LightSpeed\readme.txt" target="readme.txt" />
+    </files>
+</package>

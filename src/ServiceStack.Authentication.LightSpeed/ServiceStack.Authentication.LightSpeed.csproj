@@ -97,4 +97,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild" Condition="$(ConfigurationName)==Release">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="CurrentAssembly" />
+    </GetAssemblyIdentity>
+    <Exec Command="xcopy /y $(TargetPath) $(SolutionDir)release\latest\$(ProjectName)\lib\*" />
+  </Target>
 </Project>
