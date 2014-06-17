@@ -12,8 +12,6 @@ namespace ServiceStack.Authentication.LightSpeed
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using Mindscape.LightSpeed;
-
     using ServiceStack.Auth;
 
     /// <summary>
@@ -26,6 +24,11 @@ namespace ServiceStack.Authentication.LightSpeed
         /// Source: http://stackoverflow.com/questions/3588623/c-sharp-regex-for-a-username-with-a-few-restrictions
         /// </summary>
         public Regex ValidUserNameRegEx = new Regex(@"^(?=.{3,15}$)([A-Za-z0-9][._-]?)*$", RegexOptions.Compiled);
+
+        /// <summary>
+        /// The Unit of Work.
+        /// </summary>
+        private readonly UserAuthModelUnitOfWork unitOfWork;
 
         /// <summary>
         /// The password hasher.
@@ -48,27 +51,14 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="passwordHasher">The password hasher.</param>
         public LightSpeedUserAuthRepository(IUnitOfWork unitOfWork, IHashProvider passwordHasher)
         {
-            this.UnitOfWork = (UserAuthModelUnitOfWork)unitOfWork;
             this.passwordHasher = passwordHasher;
+            this.unitOfWork = (UserAuthModelUnitOfWork)unitOfWork;
         }
 
         /// <summary>
         /// Gets or sets the max login attempts.
         /// </summary>
         public int? MaxLoginAttempts { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unit of work.
-        /// </summary>
-        private UserAuthModelUnitOfWork UnitOfWork { get; set; }
-        
-//        /// <summary>
-//        /// Gets the current Unit of Work scope.
-//        /// </summary>
-//        private static UserAuthModelUnitOfWork UnitOfWork
-//        {
-//            get { return scope.Current; }
-//        }
 
         /// <summary>
         /// Get a UserAuth by its id.
@@ -79,9 +69,7 @@ namespace ServiceStack.Authentication.LightSpeed
         {
             var authId = int.Parse(userAuthId);
 
-            return
-                this.UnitOfWork.UserAuths
-                    .FirstOrDefault(x => x.Id == authId);
+            return this.GetUserAuth(authId);
         }
 
         /// <summary>
@@ -125,9 +113,7 @@ namespace ServiceStack.Authentication.LightSpeed
 
             return
                 oauthProvider != null
-                    ? this.UnitOfWork.UserAuths
-                          .FirstOrDefault(x =>
-                              x.Id == oauthProvider.UserAuthId)
+                    ? this.GetUserAuth(oauthProvider.UserAuthId)
                     : null;
         }
 
@@ -138,14 +124,14 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <returns>The <see cref="IUserAuth"/>.</returns>
         public IUserAuth GetUserAuthByUserName(string userNameOrEmail)
         {
-            return 
+            return
                 userNameOrEmail.Contains("@")
-                    ? this.UnitOfWork.UserAuths
-                          .FirstOrDefault(x =>
-                              x.Email == userNameOrEmail)
-                    : this.UnitOfWork.UserAuths
-                          .FirstOrDefault(x =>
-                              x.UserName == userNameOrEmail);
+                    ? this.unitOfWork.UserAuths
+                            .FirstOrDefault(x =>
+                                x.Email == userNameOrEmail)
+                    : this.unitOfWork.UserAuths
+                            .FirstOrDefault(x =>
+                                x.UserName == userNameOrEmail);
         }
 
         /// <summary>
@@ -156,9 +142,9 @@ namespace ServiceStack.Authentication.LightSpeed
         public List<IUserAuthDetails> GetUserAuthDetails(string userAuthId)
         {
             var authId = int.Parse(userAuthId);
-            
+
             return
-                this.UnitOfWork.UserAuthDetails
+                this.unitOfWork.UserAuthDetails
                     .Where(x => x.UserAuthId == authId)
                     .OrderBy(x => x.ModifiedDate)
                     .ToList()
@@ -174,7 +160,7 @@ namespace ServiceStack.Authentication.LightSpeed
         public IUserAuthDetails GetUserAuthDetailsByProvider(string userId, string provider)
         {
             return
-                this.UnitOfWork.UserAuthDetails
+                this.unitOfWork.UserAuthDetails
                     .FirstOrDefault(x =>
                         x.Provider == provider
                         && x.UserId == userId);
@@ -203,7 +189,7 @@ namespace ServiceStack.Authentication.LightSpeed
             var record = new UserAuth();
             record.PopulateWith(newUser);
 
-            this.UnitOfWork.SaveChanges();
+            this.unitOfWork.SaveChanges();
 
             return newUser;
         }
@@ -221,16 +207,13 @@ namespace ServiceStack.Authentication.LightSpeed
                 ?? new LightSpeed.UserAuth();
 
             // Try and get from the OAuth table
-            var oauthProvider = this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider);
-            if (oauthProvider == null)
-            {
-                oauthProvider =
-                    new LightSpeed.UserAuthDetail
-                        {
-                            UserId = tokens.UserId,
-                            Provider = tokens.Provider
-                        };
-            }
+            var oauthProvider =
+                this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider)
+                ?? new LightSpeed.UserAuthDetail
+                       {
+                           UserId = tokens.UserId,
+                           Provider = tokens.Provider
+                       };
 
             oauthProvider.PopulateMissing(tokens);
 
@@ -249,7 +232,7 @@ namespace ServiceStack.Authentication.LightSpeed
                 oauthProvider.CreatedDate = userAuth.ModifiedDate;
             }
 
-            this.UnitOfWork.SaveChanges();
+            this.unitOfWork.SaveChanges();
 
             return oauthProvider.UserAuthId.ToString(CultureInfo.InvariantCulture);
         }
@@ -279,7 +262,7 @@ namespace ServiceStack.Authentication.LightSpeed
             newUser.CreatedDate = existingUser.CreatedDate;
             newUser.ModifiedDate = DateTime.UtcNow;
 
-            this.UnitOfWork.SaveChanges();
+            this.unitOfWork.SaveChanges();
 
             return newUser;
         }
@@ -296,7 +279,7 @@ namespace ServiceStack.Authentication.LightSpeed
                 userAuth.CreatedDate = userAuth.ModifiedDate;
             }
 
-            this.UnitOfWork.SaveChanges();
+            this.unitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -307,9 +290,7 @@ namespace ServiceStack.Authentication.LightSpeed
         {
             var userAuth =
                 !string.IsNullOrEmpty(authSession.UserAuthId)
-                    ? this.UnitOfWork.UserAuths
-                          .FirstOrDefault(x =>
-                              x.Id == int.Parse(authSession.UserAuthId))
+                    ? this.GetUserAuth(authSession.UserAuthId)
                     : authSession.ConvertTo<LightSpeed.UserAuth>();
 
             if (userAuth.Id == default(int)
@@ -459,6 +440,18 @@ namespace ServiceStack.Authentication.LightSpeed
         }
 
         /// <summary>
+        /// Get a UserAuth by its id.
+        /// </summary>
+        /// <param name="authId">The UserAuth id.</param>
+        /// <returns>The <see cref="IUserAuth"/>.</returns>
+        private IUserAuth GetUserAuth(int authId)
+        {
+            return
+                this.unitOfWork.UserAuths
+                    .FirstOrDefault(x => x.Id == authId);
+        }
+
+        /// <summary>
         /// Validate new user.
         /// </summary>
         /// <param name="newUser">The new user.</param>
@@ -491,6 +484,14 @@ namespace ServiceStack.Authentication.LightSpeed
             }
         }
 
+        /// <summary>
+        /// Assert no user exist with given username and email of the new user.
+        /// </summary>
+        /// <param name="newUser">The new user.</param>
+        /// <param name="exceptForExistingUser">The existing user to except.</param>
+        /// <exception cref="ArgumentException">
+        /// Exception thrown if username or email already exists.
+        /// </exception>
         private void AssertNoExistingUser(IUserAuth newUser, IUserAuth exceptForExistingUser = null)
         {
             // Check for existing username

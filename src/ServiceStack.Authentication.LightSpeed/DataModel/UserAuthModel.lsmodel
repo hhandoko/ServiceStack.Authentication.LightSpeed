@@ -130,12 +130,12 @@
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
         </entityProperty>
-        <entityProperty name="Roles" isNullable="true" privateSetter="false">
+        <entityProperty name="Roles" isNullable="true" generation="FieldOnly" privateSetter="false">
           <validations>
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
         </entityProperty>
-        <entityProperty name="Permissions" isNullable="true" privateSetter="false">
+        <entityProperty name="Permissions" isNullable="true" generation="FieldOnly" privateSetter="false">
           <validations>
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
@@ -156,7 +156,7 @@
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
         </entityProperty>
-        <entityProperty name="Meta" isNullable="true" privateSetter="false">
+        <entityProperty name="Meta" isNullable="true" generation="FieldOnly" privateSetter="false">
           <validations>
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
@@ -333,7 +333,7 @@
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
         </entityProperty>
-        <entityProperty name="Items" isNullable="true" privateSetter="false">
+        <entityProperty name="Items" isNullable="true" generation="FieldOnly" privateSetter="false">
           <validations>
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
@@ -356,7 +356,7 @@
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
         </entityProperty>
-        <entityProperty name="Meta" isNullable="true" privateSetter="false">
+        <entityProperty name="Meta" isNullable="true" generation="FieldOnly" privateSetter="false">
           <validations>
             <lengthValidation minimumLength="0" maximumLength="8000" />
           </validations>
