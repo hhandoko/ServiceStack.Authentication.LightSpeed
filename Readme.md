@@ -56,7 +56,7 @@ The library implements ServiceStack's IUserAuthRepository interface. Thus, the u
 
 ```C#
 ...
-var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(email);
+var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
 var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
 ...
 ```

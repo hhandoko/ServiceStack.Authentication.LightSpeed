@@ -32,16 +32,16 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// </summary>
         private const string EmailDomain = "@test.com";
 
+        /// <summary>
+        /// The database connection string.
+        /// </summary>
+        private static string dbConnStr;
+
         #region OrmLite session
         /// <summary>
         /// The database connection.
         /// </summary>
         private static IDbConnection dbConn;
-
-        /// <summary>
-        /// The database connection string.
-        /// </summary>
-        private static string dbConnStr;
 
         /// <summary>
         /// The database connection factory.
@@ -58,7 +58,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// <summary>
         /// The unit of work scope.
         /// </summary>
-        private static PerThreadUnitOfWorkScope<UserAuthModelUnitOfWork> authScope;
+        private static SimpleUnitOfWorkScope<UserAuthModelUnitOfWork> authScope;
         #endregion
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
                         DataProvider = DataProvider.SQLite3,
                         UnitOfWorkFactory = new UserAuthModelUnitOfWorkFactory(new JsvStringSerializer())
                     };
-            authScope = new PerThreadUnitOfWorkScope<UserAuthModelUnitOfWork>(authContext);
+            authScope = new SimpleUnitOfWorkScope<UserAuthModelUnitOfWork>(authContext);
         }
 
         /// <summary>
@@ -235,6 +235,10 @@ namespace ServiceStack.Authentication.LightSpeedTests
             this.LightSpeedRepository = new LightSpeedUserAuthRepository(authScope.Current);
         }
 
+        /// <summary>
+        /// Create a new user using OrmLiteAuthRepository.
+        /// </summary>
+        /// <param name="username">The username.</param>
         private void CreateUserWithOrmLite(string username)
         {
             this.OrmLiteRepository.CreateUserAuth(

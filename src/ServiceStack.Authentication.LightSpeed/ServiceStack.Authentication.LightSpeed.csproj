@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataConnection\LightSpeedConnectionFactory.cs" />
     <Compile Include="DataModel\IUnitOfWork.cs" />
     <Compile Include="DataModel\UserAuthDetail.cs" />
     <Compile Include="DataModel\UserAuth.cs" />
