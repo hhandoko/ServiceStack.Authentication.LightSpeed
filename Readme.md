@@ -19,8 +19,6 @@ PM> Install-Package ServiceStack.Authentication.LightSpeed
   * ServiceStack (>= 4.0)
 
 ## Configuration
-Use the library-provided IUnitOfWork for the dependency injection / resolution. It is a slimmed-down interface to LightSpeed's IUnitOfWork (incorporating `BeginTransaction()` and `SaveChanges()` methods only).
-
 The following is an example for ASP.NET web applications. Set the unit of work context and scope in `Global.asax.cs`,
 
 ```C#
@@ -28,16 +26,16 @@ authContext = new LightSpeedContext<DataModelUnitOfWork>;
 authScope = new PerRequestUnitOfWorkScope<DataModelUnitOfWork>(authContext);
 ```
 
-and initialise it as normal via AppHost.Init() in `AppHost.cs`.
+and initialise it as normal via `AppHost.Init()` in `AppHost.cs`.
 
 ```C#
 container.Register<IUserAuthRepository>(c =>
     new LightSpeedUserAuthRepository(c.Resolve<IUnitOfWork>())).ReusedWithin(ReuseScope.Request);
 ```
 
-By default, it will use the standard JsvStringSerializer to save complex object (e.g. roles and permissions in UserAuth).
+By default, it will use the standard `JsvStringSerializer` to save complex object (e.g. roles and permissions in UserAuth).
 
-In order to use other IStringSerializer, define it within the custom UserAuthModelUnitOfWorkFactory. The following is an example found in the [unit test](/blob/master/tests/ServiceStack.Authentication.LightSpeedTests/LightSpeedAuthProviderReadCompatibilityTest.cs):
+In order to use other `IStringSerializer`, define it within the custom `UserAuthModelUnitOfWorkFactory`. The following is an example found in the [unit test](/blob/master/tests/ServiceStack.Authentication.LightSpeedTests/LightSpeedAuthProviderReadCompatibilityTest.cs):
 
 ```C#
 authContext =
@@ -45,18 +43,21 @@ authContext =
         {
             ConnectionString = dbConnStr,
             DataProvider = DataProvider.SQLite3,
-            UnitOfWorkFactory = new UserAuthModelUnitOfWorkFactory(new JsvStringSerializer())
+            UnitOfWorkFactory = new UserAuthModelUnitOfWorkFactory(new JsvStringSerializer()),
+            IdentityMethod = IdentityMethod.IdentityColumn
         };
 ```
 
 Please read the following [ServiceStack release notes](https://github.com/ServiceStack/ServiceStack/blob/081842d11c5dcf304a89f65e4491a9e92718d038/release-notes.md#pluggable-complex-type-serializers) for further information on pluggable complex type serializers.
 
+Also note the use of `IdentityMethod.IdentityColumn` for identity generation method. Use this option to preserve full compatibility with OrmLite, as by default, LightSpeed will use the `KeyTable` implementation. More information on various LightSpeed identity generation can be found on [this page](http://www.mindscapehq.com/documentation/lightspeed/Controlling-the-Database-Mapping/Identity-Generation).
+
 ## Usage
-The library implements ServiceStack's IUserAuthRepository interface. Thus, the usage shall be no different from the standard OrmLiteAuthRepository.
+The library implements ServiceStack's `IUserAuthRepository` interface (including `IManageRoles` for role management). Thus, the usage shall be no different from the standard `OrmLiteAuthRepository`.
 
 ```C#
 ...
-var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(email);
+var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
 var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
 ...
 ```
@@ -67,7 +68,9 @@ var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
 this.OrmLiteRepository.AssignRoles(ormLiteUser, roles: new Collection<string> { "SuperAdmin" });
 this.LightSpeedRepository.AssignRoles(lightspeedUser, roles: new Collection<string> { "SuperAdmin" });
 ...
-``` 
+```
+
+Please note that at this time, role addition and removal is only supported through the repository class. Running collection methods over the UserAuth's `Roles` and `Permissions` properties (e.g. `userAuth.Roles.Add(newRole)`) will not persist the changes.    
 
 ## Contributors
 Please refer to the following [page](/blob/master/Contributors.md) for a complete list of all contributors.

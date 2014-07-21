@@ -13,7 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Authentication
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Scripts", "SQL Scripts", "{463E41E1-91D5-41D7-96DA-E147CBA8D2AC}"
 	ProjectSection(SolutionItems) = preProject
-		resources\data_schema_1.0.sqlserver.sql = resources\data_schema_1.0.sqlserver.sql
+		resources\data_schema_1.0.dn.sqlserver.sql = resources\data_schema_1.0.dn.sqlserver.sql
+		resources\data_schema_1.0.up.sqlserver.sql = resources\data_schema_1.0.up.sqlserver.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Authentication.LightSpeedTests", "tests\ServiceStack.Authentication.LightSpeedTests\ServiceStack.Authentication.LightSpeedTests.csproj", "{0A191356-64D0-4178-B2DA-C0250585C1EF}"

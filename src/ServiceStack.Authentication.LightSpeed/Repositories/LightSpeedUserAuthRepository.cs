@@ -12,12 +12,15 @@ namespace ServiceStack.Authentication.LightSpeed
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using Mindscape.LightSpeed;
+
     using ServiceStack.Auth;
 
     /// <summary>
     /// The LightSpeed ORM user authentication repository.
     /// </summary>
-    public class LightSpeedUserAuthRepository : IUserAuthRepository
+    public partial class LightSpeedUserAuthRepository
+        : IUserAuthRepository
     {
         /// <summary>
         /// The username validation regex.
@@ -189,6 +192,7 @@ namespace ServiceStack.Authentication.LightSpeed
             var record = new UserAuth();
             record.PopulateWith(newUser);
 
+            this.unitOfWork.Add(record);
             this.unitOfWork.SaveChanges();
 
             return newUser;
@@ -202,18 +206,26 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <returns>The <see cref="string"/>.</returns>
         public string CreateOrMergeAuthSession(IAuthSession authSession, IAuthTokens tokens)
         {
-            var userAuth =
-                this.GetUserAuth(authSession, tokens)
-                ?? new LightSpeed.UserAuth();
+            // Try and get from the UserAuth table
+            var userAuth = this.GetUserAuth(authSession, tokens) as LightSpeed.UserAuth;
+            if (userAuth == null)
+            {
+                userAuth = new LightSpeed.UserAuth();
+                this.unitOfWork.Add(userAuth);
+            }
 
             // Try and get from the OAuth table
-            var oauthProvider =
-                this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider)
-                ?? new LightSpeed.UserAuthDetail
-                       {
-                           UserId = tokens.UserId,
-                           Provider = tokens.Provider
-                       };
+            var oauthProvider = this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider) as UserAuthDetail;
+            if (oauthProvider == null)
+            {
+                oauthProvider =
+                    new LightSpeed.UserAuthDetail
+                        {
+                            UserId = tokens.UserId,
+                            Provider = tokens.Provider
+                        };
+                this.unitOfWork.Add(oauthProvider);
+            }
 
             oauthProvider.PopulateMissing(tokens);
 
@@ -279,7 +291,7 @@ namespace ServiceStack.Authentication.LightSpeed
                 userAuth.CreatedDate = userAuth.ModifiedDate;
             }
 
-            this.unitOfWork.SaveChanges();
+            this.unitOfWork.SaveChanges(true);
         }
 
         /// <summary>
@@ -384,7 +396,7 @@ namespace ServiceStack.Authentication.LightSpeed
         {
             session.ThrowIfNull("session");
 
-            var userAuth = this.GetUserAuth(session, tokens);
+            var userAuth = this.GetUserAuth(session, tokens) as LightSpeed.UserAuth;
             if (userAuth == null)
             {
                 return;
