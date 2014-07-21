@@ -76,6 +76,7 @@
     <Compile Include="DataModel\UserAuthModelUnitOfWork.cs" />
     <Compile Include="DataModel\UserAuthModelUnitOfWorkFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\LightSpeedManageRoles.cs" />
     <Compile Include="Repositories\LightSpeedUserAuthRepository.cs" />
   </ItemGroup>
   <ItemGroup />

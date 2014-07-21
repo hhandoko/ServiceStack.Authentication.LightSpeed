@@ -19,7 +19,8 @@ namespace ServiceStack.Authentication.LightSpeed
     /// <summary>
     /// The LightSpeed ORM user authentication repository.
     /// </summary>
-    public class LightSpeedUserAuthRepository : IUserAuthRepository
+    public partial class LightSpeedUserAuthRepository
+        : IUserAuthRepository
     {
         /// <summary>
         /// The username validation regex.
@@ -206,7 +207,7 @@ namespace ServiceStack.Authentication.LightSpeed
         public string CreateOrMergeAuthSession(IAuthSession authSession, IAuthTokens tokens)
         {
             // Try and get from the UserAuth table
-            var userAuth = this.GetUserAuth(authSession, tokens) as UserAuth;
+            var userAuth = this.GetUserAuth(authSession, tokens) as LightSpeed.UserAuth;
             if (userAuth == null)
             {
                 userAuth = new LightSpeed.UserAuth();
@@ -257,8 +258,6 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <returns>The <see cref="IUserAuth"/>.</returns>
         public IUserAuth UpdateUserAuth(IUserAuth existingUser, IUserAuth newUser, string password)
         {
-            // TODO: Cast IUserAuth
-
             this.ValidateNewUser(newUser, password);
             this.AssertNoExistingUser(newUser);
 
@@ -286,15 +285,13 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         public void SaveUserAuth(IUserAuth userAuth)
         {
-            // TODO: Cast IUserAuth
-
             userAuth.ModifiedDate = DateTime.UtcNow;
             if (userAuth.CreatedDate == default(DateTime))
             {
                 userAuth.CreatedDate = userAuth.ModifiedDate;
             }
 
-            this.unitOfWork.SaveChanges();
+            this.unitOfWork.SaveChanges(true);
         }
 
         /// <summary>
@@ -399,7 +396,7 @@ namespace ServiceStack.Authentication.LightSpeed
         {
             session.ThrowIfNull("session");
 
-            var userAuth = this.GetUserAuth(session, tokens) as UserAuth;
+            var userAuth = this.GetUserAuth(session, tokens) as LightSpeed.UserAuth;
             if (userAuth == null)
             {
                 return;
@@ -421,8 +418,6 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         protected virtual void RecordSuccessfulLogin(IUserAuth userAuth)
         {
-            // TODO: Cast IUserAuth
-
             if (this.MaxLoginAttempts == null)
             {
                 return;
@@ -440,8 +435,6 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         protected virtual void RecordInvalidLoginAttempt(IUserAuth userAuth)
         {
-            // TODO: Cast IUserAuth
-
             if (this.MaxLoginAttempts == null)
             {
                 return;

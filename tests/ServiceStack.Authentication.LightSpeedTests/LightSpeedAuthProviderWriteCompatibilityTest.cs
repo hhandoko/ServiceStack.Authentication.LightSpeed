@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LightSpeedAuthProviderReadCompatibilityTest.cs" company="ServiceStack.Authentication.LightSpeed">
+// <copyright file="LightSpeedAuthProviderWriteCompatibilityTest.cs" company="ServiceStack.Authentication.LightSpeed">
 //   Copyright (c) ServiceStack.Authentication.LightSpeed contributors 2014
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
     /// The LightSpeed ORM auth provider compatibility with OrmLite auth provider test.
     /// </summary>
     [TestFixture]
-    public class LightSpeedAuthProviderReadCompatibilityTest
+    public class LightSpeedAuthProviderWriteCompatibilityTest
     {
         /// <summary>
         /// The test email domain.
@@ -86,16 +86,16 @@ namespace ServiceStack.Authentication.LightSpeedTests
         }
 
         /// <summary>
-        /// Check LightSpeed read compatibility for OrmLite-created entries.
+        /// Check LightSpeed write compatibility for OrmLite-created entries.
         /// </summary>
         /// <param name="username">The username.</param>
-        [TestCase("rGetByUsername1")]
-        [TestCase("rGetByUsername2")]
-        [TestCase("rGetByUsername3")]
-        public void CheckReadGetByUsername(string username)
+        [TestCase("wGetByUsername1")]
+        [TestCase("wGetByUsername2")]
+        [TestCase("wGetByUsername3")]
+        public void CheckWriteGetByUsername(string username)
         {
             // Arrange
-            this.CreateUserWithOrmLite(username);
+            this.CreateUserWithLightSpeed(username);
 
             // Act
             var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
@@ -106,16 +106,16 @@ namespace ServiceStack.Authentication.LightSpeedTests
         }
 
         /// <summary>
-        /// Check LightSpeed read compatibility for OrmLite-created entries.
+        /// Check LightSpeed write compatibility for OrmLite-created entries.
         /// </summary>
         /// <param name="username">The username.</param>
-        [TestCase("rGetByEmail1")]
-        [TestCase("rGetByEmail2")]
-        [TestCase("rGetByEmail3")]
+        [TestCase("wGetByEmail1")]
+        [TestCase("wGetByEmail2")]
+        [TestCase("wGetByEmail3")]
         public void CheckReadGetByEmail(string username)
         {
             // Arrange
-            this.CreateUserWithOrmLite(username);
+            this.CreateUserWithLightSpeed(username);
             var email = string.Format("{0}@{1}", username, EmailDomain);
 
             // Act
@@ -127,44 +127,45 @@ namespace ServiceStack.Authentication.LightSpeedTests
         }
 
         /// <summary>
-        /// Check LightSpeed read assigned user role(s).
+        /// Check LightSpeed write assigned user role(s).
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="role">The role.</param>
-        [TestCase("rGetRole1", "SuperAdmin")]
-        [TestCase("rGetRole2", "Marketing")]
+        [TestCase("wGetRole1", "SuperAdmin")]
+        [TestCase("wGetRole2", "Marketing")]
         public void CheckReadAssignRole(string username, string role)
         {
             // Arrange
-            this.CreateUserWithOrmLite(username);
-            var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
-            this.OrmLiteRepository.AssignRoles(ormLiteUser, roles: new Collection<string> { role });
+            this.CreateUserWithLightSpeed(username);
+            var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
+            this.LightSpeedRepository.AssignRoles(lightspeedUser, roles: new Collection<string> { role });
 
             // Act
-            var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
-            var hasRole = lightspeedUser.Roles.Contains(role);
+            var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
+            var hasRole = ormLiteUser.Roles.Contains(role);
 
             // Assert
             Assert.IsTrue(hasRole);
         }
 
         /// <summary>
-        /// Check LightSpeed read assigned user role(s).
+        /// Check LightSpeed write assigned user role(s).
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="permission">The permission.</param>
-        [TestCase("rGetPermission1", "AddItem")]
-        [TestCase("rGetPermission2", "EditItem")]
+        [TestCase("wGetPermission1", "AddItem")]
+        [TestCase("wGetPermission2", "EditItem")]
         public void CheckReadAssignPermission(string username, string permission)
         {
             // Arrange
-            this.CreateUserWithOrmLite(username);
-            var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
-            this.OrmLiteRepository.AssignRoles(ormLiteUser, permissions: new Collection<string> { permission });
+            this.CreateUserWithLightSpeed(username);
+            var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
+            this.LightSpeedRepository.AssignRoles(lightspeedUser, permissions: new Collection<string> { permission });
+            authScope.Current.SaveChanges();
 
             // Act
-            var lightspeedUser = this.LightSpeedRepository.GetUserAuthByUserName(username);
-            var hasRole = lightspeedUser.Permissions.Contains(permission);
+            var ormLiteUser = this.OrmLiteRepository.GetUserAuthByUserName(username);
+            var hasRole = ormLiteUser.Permissions.Contains(permission);
 
             // Assert
             Assert.IsTrue(hasRole);
@@ -206,7 +207,8 @@ namespace ServiceStack.Authentication.LightSpeedTests
                     {
                         ConnectionString = dbConnStr,
                         DataProvider = DataProvider.SQLite3,
-                        UnitOfWorkFactory = new UserAuthModelUnitOfWorkFactory(new JsvStringSerializer())
+                        UnitOfWorkFactory = new UserAuthModelUnitOfWorkFactory(new JsvStringSerializer()),
+                        IdentityMethod = IdentityMethod.IdentityColumn
                     };
             authScope = new SimpleUnitOfWorkScope<UserAuthModelUnitOfWork>(authContext);
         }
@@ -236,12 +238,12 @@ namespace ServiceStack.Authentication.LightSpeedTests
         }
 
         /// <summary>
-        /// Create a new user using OrmLiteAuthRepository.
+        /// Create a new user using LightSpeedAuthRepository.
         /// </summary>
         /// <param name="username">The username.</param>
-        private void CreateUserWithOrmLite(string username)
+        private void CreateUserWithLightSpeed(string username)
         {
-            this.OrmLiteRepository.CreateUserAuth(
+            this.LightSpeedRepository.CreateUserAuth(
                 new Auth.UserAuth
                 {
                     UserName = username,

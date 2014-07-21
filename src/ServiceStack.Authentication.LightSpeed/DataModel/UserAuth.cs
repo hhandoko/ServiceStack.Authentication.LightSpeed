@@ -23,9 +23,12 @@ namespace ServiceStack.Authentication.LightSpeed
         {
             get
             {
+                var uowSerializer = UnitOfWork as UserAuthModelUnitOfWork;
+
                 return
-                    ((UserAuthModelUnitOfWork)UnitOfWork).Serializer
-                    ?? new JsvStringSerializer();
+                    uowSerializer != null
+                        ? uowSerializer.Serializer
+                        : new JsvStringSerializer();
             }
         }
 

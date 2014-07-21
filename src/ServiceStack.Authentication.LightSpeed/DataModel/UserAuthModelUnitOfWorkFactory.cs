@@ -43,7 +43,7 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>The <see cref="IUnitOfWork"/>.</returns>
-        public Mindscape.LightSpeed.IUnitOfWork Create(LightSpeedContext context)
+        public IUnitOfWork Create(LightSpeedContext context)
         {
             return
                 new UserAuthModelUnitOfWork
