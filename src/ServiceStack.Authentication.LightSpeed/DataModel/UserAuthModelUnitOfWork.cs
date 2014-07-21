@@ -6,12 +6,15 @@
 
 namespace ServiceStack.Authentication.LightSpeed
 {
+    using Mindscape.LightSpeed;
+
     using ServiceStack.Text;
 
     /// <summary>
     /// The UserAuth model unit of work.
     /// </summary>
-    public partial class UserAuthModelUnitOfWork : IUnitOfWork
+    public partial class UserAuthModelUnitOfWork
+        : IUnitOfWork
     {
         /// <summary>
         /// Gets or sets the string serializer.

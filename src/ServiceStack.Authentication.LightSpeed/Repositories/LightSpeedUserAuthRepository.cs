@@ -12,6 +12,8 @@ namespace ServiceStack.Authentication.LightSpeed
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using Mindscape.LightSpeed;
+
     using ServiceStack.Auth;
 
     /// <summary>
@@ -189,6 +191,7 @@ namespace ServiceStack.Authentication.LightSpeed
             var record = new UserAuth();
             record.PopulateWith(newUser);
 
+            this.unitOfWork.Add(record);
             this.unitOfWork.SaveChanges();
 
             return newUser;
@@ -202,18 +205,26 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <returns>The <see cref="string"/>.</returns>
         public string CreateOrMergeAuthSession(IAuthSession authSession, IAuthTokens tokens)
         {
-            var userAuth =
-                this.GetUserAuth(authSession, tokens)
-                ?? new LightSpeed.UserAuth();
+            // Try and get from the UserAuth table
+            var userAuth = this.GetUserAuth(authSession, tokens) as UserAuth;
+            if (userAuth == null)
+            {
+                userAuth = new LightSpeed.UserAuth();
+                this.unitOfWork.Add(userAuth);
+            }
 
             // Try and get from the OAuth table
-            var oauthProvider =
-                this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider)
-                ?? new LightSpeed.UserAuthDetail
-                       {
-                           UserId = tokens.UserId,
-                           Provider = tokens.Provider
-                       };
+            var oauthProvider = this.GetUserAuthDetailsByProvider(tokens.UserId, tokens.Provider) as UserAuthDetail;
+            if (oauthProvider == null)
+            {
+                oauthProvider =
+                    new LightSpeed.UserAuthDetail
+                        {
+                            UserId = tokens.UserId,
+                            Provider = tokens.Provider
+                        };
+                this.unitOfWork.Add(oauthProvider);
+            }
 
             oauthProvider.PopulateMissing(tokens);
 
@@ -246,6 +257,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <returns>The <see cref="IUserAuth"/>.</returns>
         public IUserAuth UpdateUserAuth(IUserAuth existingUser, IUserAuth newUser, string password)
         {
+            // TODO: Cast IUserAuth
+
             this.ValidateNewUser(newUser, password);
             this.AssertNoExistingUser(newUser);
 
@@ -273,6 +286,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         public void SaveUserAuth(IUserAuth userAuth)
         {
+            // TODO: Cast IUserAuth
+
             userAuth.ModifiedDate = DateTime.UtcNow;
             if (userAuth.CreatedDate == default(DateTime))
             {
@@ -384,7 +399,7 @@ namespace ServiceStack.Authentication.LightSpeed
         {
             session.ThrowIfNull("session");
 
-            var userAuth = this.GetUserAuth(session, tokens);
+            var userAuth = this.GetUserAuth(session, tokens) as UserAuth;
             if (userAuth == null)
             {
                 return;
@@ -406,6 +421,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         protected virtual void RecordSuccessfulLogin(IUserAuth userAuth)
         {
+            // TODO: Cast IUserAuth
+
             if (this.MaxLoginAttempts == null)
             {
                 return;
@@ -423,6 +440,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         protected virtual void RecordInvalidLoginAttempt(IUserAuth userAuth)
         {
+            // TODO: Cast IUserAuth
+
             if (this.MaxLoginAttempts == null)
             {
                 return;

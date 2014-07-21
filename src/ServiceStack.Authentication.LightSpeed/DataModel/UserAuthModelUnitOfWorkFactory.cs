@@ -13,7 +13,8 @@ namespace ServiceStack.Authentication.LightSpeed
     /// <summary>
     /// The UserAuthModelUnitOfWork factory.
     /// </summary>
-    public class UserAuthModelUnitOfWorkFactory : IUnitOfWorkFactory
+    public class UserAuthModelUnitOfWorkFactory
+        : IUnitOfWorkFactory
     {
         /// <summary>
         /// The string serializer.
