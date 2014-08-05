@@ -14,13 +14,22 @@ namespace ServiceStack.Authentication.LightSpeed
     /// <summary>
     /// The LightSpeed ORM connection factory.
     /// </summary>
-    public class LightSpeedConnectionFactory : IDbConnectionFactory
+    public class LightSpeedConnectionFactory
+        : IDbConnectionFactory
     {
+        /// <summary>
+        /// Create a new DB connection
+        /// </summary>
+        /// <returns>The <see cref="IDbConnection"/>.</returns>
         public IDbConnection CreateDbConnection()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Open a DB connection.
+        /// </summary>
+        /// <returns>The <see cref="IDbConnection"/>.</returns>
         public IDbConnection OpenDbConnection()
         {
             throw new NotImplementedException();

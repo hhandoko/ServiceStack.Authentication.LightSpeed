@@ -298,15 +298,14 @@ namespace ServiceStack.Authentication.LightSpeed
                 var hasChanged = false;
                 var rolesAndPermissions =
                     this.unitOfWork.UserAuthRoles
-                        .Where(x => x.UserAuthId == userAuth.Id);
+                        .Where(x => x.UserAuthId == userAuth.Id)
+                        .ToList();
 
                 if (!roles.IsEmpty())
                 {
                     var rolesToRemove =
-                        (from existingRole in rolesAndPermissions
-                         from roleToRemove in roles
-                         where existingRole.Role.Contains(roleToRemove)
-                         select existingRole).ToList();
+                        rolesAndPermissions.Where(q =>
+                            roles.Contains(q.Role));
 
                     this.unitOfWork.Remove(rolesToRemove);
                     hasChanged = true;
@@ -315,10 +314,8 @@ namespace ServiceStack.Authentication.LightSpeed
                 if (!permissions.IsEmpty())
                 {
                     var permissionsToRemove =
-                        (from existingPermission in rolesAndPermissions
-                         from permissionToRemove in permissions
-                         where existingPermission.Role.Contains(permissionToRemove)
-                         select existingPermission).ToList();
+                        rolesAndPermissions.Where(q =>
+                            permissions.Contains(q.Permission));
 
                     this.unitOfWork.Remove(permissionsToRemove);
                     hasChanged = true;

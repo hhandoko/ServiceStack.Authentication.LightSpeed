@@ -195,7 +195,8 @@ namespace ServiceStack.Authentication.LightSpeed
             this.unitOfWork.Add(record);
             this.unitOfWork.SaveChanges();
 
-            return newUser;
+            //return newUser;
+            return record;
         }
 
         /// <summary>
