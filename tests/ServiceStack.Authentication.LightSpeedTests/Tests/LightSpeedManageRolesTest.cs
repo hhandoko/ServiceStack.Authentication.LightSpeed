@@ -42,7 +42,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
             {
                 ConfigureContainer = container =>
                 {
-                    container.Register<IUnitOfWork>(this.UnitOfWork);
+                    container.Register<IUnitOfWork>(c => this.UnitOfWork);
                     container.Register<IAuthRepository>(c =>
                         new LightSpeedUserAuthRepository(c.Resolve<IUnitOfWork>()));
                 }
@@ -109,12 +109,12 @@ namespace ServiceStack.Authentication.LightSpeedTests
             {
                 ConfigureContainer = container =>
                 {
-                    container.Register<IUnitOfWork>(this.UnitOfWork);
+                    container.Register<IUnitOfWork>(c => this.UnitOfWork);
                     container.Register<IAuthRepository>(c =>
                         new LightSpeedUserAuthRepository(c.Resolve<IUnitOfWork>())
-                        {
-                            UseDistinctRoleTables = true
-                        });
+                            {
+                                UseDistinctRoleTables = true
+                            });
                 }
             }.Init())
             {
@@ -131,11 +131,11 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 userAuth = this.UnitOfWork.FindById<LightSpeed.UserAuth>(response.UserId); // Hydrate userAuth
                 var assignRoleRequest =
                     new AssignRoles
-                    {
-                        UserName = userAuth.UserName,
-                        Roles = { TestRoleName },
-                        Permissions = { TestPermissionName },
-                    };
+                        {
+                            UserName = userAuth.UserName,
+                            Roles = { TestRoleName },
+                            Permissions = { TestPermissionName },
+                        };
 
                 // Assert #1.1: 
                 // Check AssignRoles response to contain roles and permissions
@@ -159,11 +159,11 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 // Act
                 var unassignRolesRequest =
                     new UnAssignRoles
-                    {
-                        UserName = userAuth.UserName,
-                        Roles = { TestRoleName },
-                        Permissions = { TestPermissionName },
-                    };
+                        {
+                            UserName = userAuth.UserName,
+                            Roles = { TestRoleName },
+                            Permissions = { TestPermissionName },
+                        };
                 appHost.ExecuteService(unassignRolesRequest, request);
 
                 // Assert #2.1:

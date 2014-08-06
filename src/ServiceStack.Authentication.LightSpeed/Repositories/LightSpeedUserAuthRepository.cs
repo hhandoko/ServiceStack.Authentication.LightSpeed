@@ -195,7 +195,6 @@ namespace ServiceStack.Authentication.LightSpeed
             this.unitOfWork.Add(record);
             this.unitOfWork.SaveChanges();
 
-            //return newUser;
             return record;
         }
 
@@ -208,7 +207,7 @@ namespace ServiceStack.Authentication.LightSpeed
         public string CreateOrMergeAuthSession(IAuthSession authSession, IAuthTokens tokens)
         {
             // Try and get from the UserAuth table
-            var userAuth = this.GetUserAuth(authSession, tokens) as LightSpeed.UserAuth;
+            var userAuth = (LightSpeed.UserAuth)this.GetUserAuth(authSession, tokens);
             if (userAuth == null)
             {
                 userAuth = new LightSpeed.UserAuth();
@@ -269,15 +268,16 @@ namespace ServiceStack.Authentication.LightSpeed
                 this.passwordHasher.GetHashAndSaltString(password, out hash, out salt);
             }
 
-            newUser.Id = existingUser.Id;
-            newUser.PasswordHash = hash;
-            newUser.Salt = salt;
-            newUser.CreatedDate = existingUser.CreatedDate;
-            newUser.ModifiedDate = DateTime.UtcNow;
+            var record = (LightSpeed.UserAuth)newUser;
+            record.Id = existingUser.Id;
+            record.PasswordHash = hash;
+            record.Salt = salt;
+            record.CreatedDate = existingUser.CreatedDate;
+            record.ModifiedDate = DateTime.UtcNow;
 
             this.unitOfWork.SaveChanges();
 
-            return newUser;
+            return record;
         }
 
         /// <summary>
@@ -286,13 +286,14 @@ namespace ServiceStack.Authentication.LightSpeed
         /// <param name="userAuth">The UserAuth.</param>
         public void SaveUserAuth(IUserAuth userAuth)
         {
-            userAuth.ModifiedDate = DateTime.UtcNow;
-            if (userAuth.CreatedDate == default(DateTime))
+            var record = (LightSpeed.UserAuth)userAuth;
+            record.ModifiedDate = DateTime.UtcNow;
+            if (record.CreatedDate == default(DateTime))
             {
-                userAuth.CreatedDate = userAuth.ModifiedDate;
+                record.CreatedDate = record.ModifiedDate;
             }
 
-            this.unitOfWork.SaveChanges(true);
+            this.unitOfWork.SaveChanges();
         }
 
         /// <summary>
