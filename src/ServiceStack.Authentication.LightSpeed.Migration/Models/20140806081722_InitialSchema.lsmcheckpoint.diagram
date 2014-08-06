@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<minimalLanguageDiagram dslVersion="1.1.0.0" absoluteBounds="0, 0, 11, 10.125" name="UserAuthModel">
+  <modelMoniker name="/UserAuthModel" />
+  <nestedChildShapes>
+    <entityShape Id="9864e0e9-554b-430b-86e3-8900924daabb" absoluteBounds="0.5, 0.5, 1.5, 7.6251529947916659">
+      <entityMoniker name="/UserAuthModel/UserAuth" />
+      <nestedChildShapes>
+        <elementListCompartment Id="969daccd-dbd7-468c-a547-e4a187c306b9" absoluteBounds="0.51499999999999968, 0.91000000000000014, 1.4700000000000002, 7.1151529947916661" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </entityShape>
+    <entityShape Id="12e35dc3-64e3-42ca-9d4a-c5a3da0a622e" absoluteBounds="4, 0.5, 1.5, 1.8561100260416668">
+      <entityMoniker name="/UserAuthModel/UserAuthRole" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d0180ad4-01ab-4a9e-a1b9-d197f8768968" absoluteBounds="4.0150000000000006, 0.91000000000000014, 1.4700000000000002, 1.3461100260416665" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </entityShape>
+    <entityShape Id="99740ca9-4e9a-494c-8399-8c1d9f389822" absoluteBounds="4, 2.5, 1.5, 7.4328515625">
+      <entityMoniker name="/UserAuthModel/UserAuthDetail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2bedea66-dc6a-4b92-9dc3-33710d676a24" absoluteBounds="4.0150000000000006, 2.91, 1.4700000000000002, 6.9228515625" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </entityShape>
+    <oneToManyAssociationConnector edgePoints="[(2 : 5.31257649739583); (4 : 5.31257649739583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <oneToManyAssociationMoniker Id="5ec140e5-7628-421f-b65a-5983fbd9afa7" />
+      <relativeChildShapes />
+      <nodes>
+        <entityShapeMoniker Id="9864e0e9-554b-430b-86e3-8900924daabb" />
+        <entityShapeMoniker Id="99740ca9-4e9a-494c-8399-8c1d9f389822" />
+      </nodes>
+    </oneToManyAssociationConnector>
+    <oneToManyAssociationConnector edgePoints="[(2 : 1.42805501302083); (4 : 1.42805501302083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <oneToManyAssociationMoniker Id="2b89fc99-519b-460c-88f4-dd453798d057" />
+      <relativeChildShapes />
+      <nodes>
+        <entityShapeMoniker Id="9864e0e9-554b-430b-86e3-8900924daabb" />
+        <entityShapeMoniker Id="12e35dc3-64e3-42ca-9d4a-c5a3da0a622e" />
+      </nodes>
+    </oneToManyAssociationConnector>
+  </nestedChildShapes>
+</minimalLanguageDiagram>

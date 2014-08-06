@@ -9,6 +9,7 @@ namespace ServiceStack.Authentication.LightSpeed
   [Serializable]
   [System.CodeDom.Compiler.GeneratedCode("LightSpeedModelGenerator", "1.0.0.0")]
   [System.ComponentModel.DataObject]
+  [Table(IdentityMethod=IdentityMethod.IdentityColumn)]
   public partial class UserAuth : Entity<int>
   {
     #region Fields
@@ -439,6 +440,7 @@ namespace ServiceStack.Authentication.LightSpeed
   [Serializable]
   [System.CodeDom.Compiler.GeneratedCode("LightSpeedModelGenerator", "1.0.0.0")]
   [System.ComponentModel.DataObject]
+  [Table(IdentityMethod=IdentityMethod.IdentityColumn)]
   public partial class UserAuthRole : Entity<int>
   {
     #region Fields
@@ -564,7 +566,7 @@ namespace ServiceStack.Authentication.LightSpeed
   [Serializable]
   [System.CodeDom.Compiler.GeneratedCode("LightSpeedModelGenerator", "1.0.0.0")]
   [System.ComponentModel.DataObject]
-  [Table("UserAuthDetails")]
+  [Table("UserAuthDetails", IdentityMethod=IdentityMethod.IdentityColumn)]
   public partial class UserAuthDetail : Entity<int>
   {
     #region Fields
