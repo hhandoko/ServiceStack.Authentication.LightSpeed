@@ -89,10 +89,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LightSpeedAuthProviderWriteCompatibilityTest.cs" />
-    <Compile Include="LightSpeedAuthProviderReadCompatibilityTest.cs" />
-    <Compile Include="LightSpeedAuthProviderTest.cs" />
+    <Compile Include="Tests\Base\LightSpeedCompatibilityTestBase.cs" />
+    <Compile Include="Tests\Base\LightSpeedTestBase.cs" />
+    <Compile Include="Tests\LightSpeedAuthProviderWriteCompatibilityTest.cs" />
+    <Compile Include="Tests\LightSpeedAuthProviderReadCompatibilityTest.cs" />
+    <Compile Include="Tests\LightSpeedAuthProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\LightSpeedManageRolesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="x86\SQLite.Interop.dll">
