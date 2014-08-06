@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LightSpeedUserAuthRepository.cs" company="ServiceStack.Authentication.LightSpeed">
+// <copyright file="LightSpeedManageRoles.cs" company="ServiceStack.Authentication.LightSpeed">
 //   Copyright (c) ServiceStack.Authentication.LightSpeed contributors 2014
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ namespace ServiceStack.Authentication.LightSpeed
     using ServiceStack.Auth;
 
     /// <summary>
-    /// The LightSpeed ORM user authentication repository.
+    /// The LightSpeed ORM user authentication repository, IManageRoles implementation.
     /// </summary>
     public partial class LightSpeedUserAuthRepository
         : IManageRoles
