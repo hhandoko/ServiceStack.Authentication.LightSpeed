@@ -17,7 +17,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
     /// </summary>
     [TestFixture]
     public class LightSpeedAuthProviderWriteCompatibilityTest
-        : LightSpeedTestBase
+        : LightSpeedCompatibilityTestBase
     {
         /// <summary>
         /// Check LightSpeed write compatibility for OrmLite-created entries.

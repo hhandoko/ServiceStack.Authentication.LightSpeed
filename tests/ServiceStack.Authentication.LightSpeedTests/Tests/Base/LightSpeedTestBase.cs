@@ -7,16 +7,13 @@
 namespace ServiceStack.Authentication.LightSpeedTests
 {
     using System;
-    using System.Data;
     using System.IO;
 
     using Mindscape.LightSpeed;
 
     using NUnit.Framework;
 
-    using ServiceStack.Auth;
     using ServiceStack.Authentication.LightSpeed;
-    using ServiceStack.Data;
     using ServiceStack.OrmLite;
     using ServiceStack.OrmLite.Sqlite;
     using ServiceStack.Text;
@@ -36,18 +33,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// </summary>
         public static string DbConnStr { get; private set; }
 
-        #region OrmLite session
-        /// <summary>
-        /// Gets the database connection.
-        /// </summary>
-        public static IDbConnection DbConn { get; private set; }
-
-        /// <summary>
-        /// Gets the database connection factory.
-        /// </summary>
-        public static IDbConnectionFactory DbFactory { get; private set; }
-        #endregion
-
         #region LightSpeed session
         /// <summary>
         /// Gets the database connection context.
@@ -59,11 +44,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// </summary>
         public static SimpleUnitOfWorkScope<UserAuthModelUnitOfWork> AuthScope { get; private set; }
         #endregion
-
-        /// <summary>
-        /// Gets or sets the OrmLite repository.
-        /// </summary>
-        public OrmLiteAuthRepository OrmLiteRepository { get; set; }
 
         /// <summary>
         /// Gets or sets the LightSpeed repository.
@@ -99,7 +79,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
         public void TestSetup()
         {
             OpenDbConn();
-            this.InitRepositories();
         }
 
         /// <summary>
@@ -122,23 +101,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
             {
                 AuthScope.Dispose();
             }
-
-            DbConn.Close();
-        }
-
-        /// <summary>
-        /// Create a new user using OrmLiteAuthRepository.
-        /// </summary>
-        /// <param name="username">The username.</param>
-        public void CreateUserWithOrmLite(string username)
-        {
-            this.OrmLiteRepository.CreateUserAuth(
-                new Auth.UserAuth
-                {
-                    UserName = username,
-                    Email = string.Format("{0}@{1}", username, EmailDomain)
-                },
-                "Abc!123");
         }
 
         /// <summary>
@@ -188,12 +150,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 string.Format(
                     "Data Source={0};Version=3;",
                     Path.GetFullPath(string.Format("{0}/Data/ss_auth.sqlite", TestContext.CurrentContext.WorkDirectory)));
-
-            DbFactory =
-                new OrmLiteConnectionFactory(
-                    DbConnStr,
-                    new SqliteOrmLiteDialectProvider());
-
+            
             AuthContext =
                 new LightSpeedContext<UserAuthModelUnitOfWork>
                 {
@@ -209,9 +166,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// </summary>
         private static void OpenDbConn()
         {
-            // OrmLite connection
-            DbConn = DbFactory.Open();
-
             // LightSpeed UnitOfWork
             AuthScope = new SimpleUnitOfWorkScope<UserAuthModelUnitOfWork>(AuthContext);
         }
@@ -221,7 +175,12 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// </summary>
         private static void DropAndCreateTables()
         {
-            using (var conn = DbFactory.Open())
+            var factory =
+                new OrmLiteConnectionFactory(
+                    DbConnStr,
+                    new SqliteOrmLiteDialectProvider());
+
+            using (var conn = factory.Open())
             {
                 conn.DropTable<ServiceStack.Auth.UserAuthRole>();
                 conn.DropTable<ServiceStack.Auth.UserAuthDetails>();
@@ -231,16 +190,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 conn.CreateTable<ServiceStack.Auth.UserAuthDetails>();
                 conn.CreateTable<ServiceStack.Auth.UserAuthRole>();
             }
-        }
-
-        /// <summary>
-        /// Initialise the repositories.
-        /// </summary>
-        private void InitRepositories()
-        {
-            // Init OrmLite and LightSpeed repository
-            this.OrmLiteRepository = new OrmLiteAuthRepository(DbFactory);
-            this.LightSpeedRepository = new LightSpeedUserAuthRepository(this.UnitOfWork);
         }
     }
 }

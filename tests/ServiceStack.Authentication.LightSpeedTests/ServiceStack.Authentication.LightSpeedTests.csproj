@@ -89,6 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\Base\LightSpeedCompatibilityTestBase.cs" />
     <Compile Include="Tests\Base\LightSpeedTestBase.cs" />
     <Compile Include="Tests\LightSpeedAuthProviderWriteCompatibilityTest.cs" />
     <Compile Include="Tests\LightSpeedAuthProviderReadCompatibilityTest.cs" />
