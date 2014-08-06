@@ -42,7 +42,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
             {
                 ConfigureContainer = container =>
                 {
-                    container.Register<IUnitOfWork>(AuthScope.Current);
+                    container.Register<IUnitOfWork>(this.UnitOfWork);
                     container.Register<IAuthRepository>(c =>
                         new LightSpeedUserAuthRepository(c.Resolve<IUnitOfWork>()));
                 }
@@ -58,7 +58,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 // Test #1: Check role and permission assignment
                 // ---------------------------------------------
                 // Act
-                userAuth = AuthScope.Current.FindById<LightSpeed.UserAuth>(response.UserId); // Hydrate userAuth
+                userAuth = this.UnitOfWork.FindById<LightSpeed.UserAuth>(response.UserId); // Hydrate userAuth
                 var assignRoleRequest = 
                     new AssignRoles
                     {
@@ -75,7 +75,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 
                 // Assert #1.2: 
                 // Check UserAuth to contain roles and permissions
-                userAuth = AuthScope.Current.FindById<LightSpeed.UserAuth>(response.UserId);
+                userAuth = this.UnitOfWork.FindById<LightSpeed.UserAuth>(response.UserId);
                 Assert.That(userAuth.Roles[0], Is.EqualTo(TestRoleName));
                 Assert.That(userAuth.Permissions[0], Is.EqualTo(TestPermissionName));
 
@@ -93,7 +93,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
 
                 // Assert #2.1:
                 // Check UserAuth not to contain roles and permissions above
-                userAuth = AuthScope.Current.FindById<LightSpeed.UserAuth>(response.UserId);
+                userAuth = this.UnitOfWork.FindById<LightSpeed.UserAuth>(response.UserId);
                 Assert.That(userAuth.Roles.Count, Is.EqualTo(0));
                 Assert.That(userAuth.Permissions.Count, Is.EqualTo(0));
             }
@@ -109,12 +109,12 @@ namespace ServiceStack.Authentication.LightSpeedTests
             {
                 ConfigureContainer = container =>
                 {
-                    container.Register<IUnitOfWork>(AuthScope.Current);
+                    container.Register<IUnitOfWork>(this.UnitOfWork);
                     container.Register<IAuthRepository>(c =>
                         new LightSpeedUserAuthRepository(c.Resolve<IUnitOfWork>())
-                            {
-                                UseDistinctRoleTables = true
-                            });
+                        {
+                            UseDistinctRoleTables = true
+                        });
                 }
             }.Init())
             {
@@ -128,7 +128,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 // Test #1: Check role and permission assignment
                 // ---------------------------------------------
                 // Act
-                userAuth = AuthScope.Current.FindById<LightSpeed.UserAuth>(response.UserId); // Hydrate userAuth
+                userAuth = this.UnitOfWork.FindById<LightSpeed.UserAuth>(response.UserId); // Hydrate userAuth
                 var assignRoleRequest =
                     new AssignRoles
                     {

@@ -13,15 +13,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
     /// </summary>
     [TestFixture]
     public class LightSpeedAuthProviderTest
+        : LightSpeedTestBase
     {
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-        }
     }
 }

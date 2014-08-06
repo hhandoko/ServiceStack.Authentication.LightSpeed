@@ -71,24 +71,52 @@ namespace ServiceStack.Authentication.LightSpeedTests
         public LightSpeedUserAuthRepository LightSpeedRepository { get; set; }
 
         /// <summary>
-        /// The setup.
+        /// Gets the unit of work.
+        /// </summary>
+        public UserAuthModelUnitOfWork UnitOfWork
+        {
+            get { return AuthScope.Current; }
+        }
+
+        /// <summary>
+        /// Test fixture setup.
+        /// Run once before all tests in the fixture is run.
         /// </summary>
         [TestFixtureSetUp]
-        public void Setup()
+        public void FixtureSetup()
         {
-            // Initiate database connection,
-            // refresh the tables to a blank slate,
-            // and initialise the repositories
-            InitDbConn();
+            // Initiate database connection, and
+            // refresh the tables to a blank slate.
+            CreateDbContext();
             DropAndCreateTables();
+        }
+
+        /// <summary>
+        /// Test setup.
+        /// Runs everytime before each test is run.
+        /// </summary>
+        [SetUp]
+        public void TestSetup()
+        {
+            OpenDbConn();
             this.InitRepositories();
         }
 
         /// <summary>
-        /// The tear down.
+        /// Test fixture teardown.
+        /// Run once after all tests in the fixture finished running.
         /// </summary>
         [TestFixtureTearDown]
-        public void TearDown()
+        public void FixtureTearDown()
+        {
+        }
+
+        /// <summary>
+        /// Test tear down.
+        /// Runs everytime after each test is finished.
+        /// </summary>
+        [TearDown]
+        public void TestTearDown()
         {
             if (AuthScope.HasCurrent)
             {
@@ -128,6 +156,11 @@ namespace ServiceStack.Authentication.LightSpeedTests
                 "Abc!123");
         }
 
+        /// <summary>
+        /// Create a new user registration.
+        /// </summary>
+        /// <param name="autoLogin">The auto login.</param>
+        /// <returns>The <see cref="Register"/>.</returns>
         public static Register CreateNewUserRegistration(bool? autoLogin = null)
         {
             var userId = Environment.TickCount % 10000;
@@ -147,9 +180,9 @@ namespace ServiceStack.Authentication.LightSpeedTests
         }
 
         /// <summary>
-        /// Initiate database connection.
+        /// Create the database connection context.
         /// </summary>
-        private static void InitDbConn()
+        private static void CreateDbContext()
         {
             DbConnStr =
                 string.Format(
@@ -161,8 +194,6 @@ namespace ServiceStack.Authentication.LightSpeedTests
                     DbConnStr,
                     new SqliteOrmLiteDialectProvider());
 
-            DbConn = DbFactory.Open();
-
             AuthContext =
                 new LightSpeedContext<UserAuthModelUnitOfWork>
                 {
@@ -171,6 +202,17 @@ namespace ServiceStack.Authentication.LightSpeedTests
                     UnitOfWorkFactory = new UserAuthModelUnitOfWorkFactory(new JsvStringSerializer()),
                     IdentityMethod = IdentityMethod.IdentityColumn
                 };
+        }
+
+        /// <summary>
+        /// Open a new database connection.
+        /// </summary>
+        private static void OpenDbConn()
+        {
+            // OrmLite connection
+            DbConn = DbFactory.Open();
+
+            // LightSpeed UnitOfWork
             AuthScope = new SimpleUnitOfWorkScope<UserAuthModelUnitOfWork>(AuthContext);
         }
 
@@ -179,13 +221,16 @@ namespace ServiceStack.Authentication.LightSpeedTests
         /// </summary>
         private static void DropAndCreateTables()
         {
-            DbConn.DropTable<ServiceStack.Auth.UserAuthRole>();
-            DbConn.DropTable<ServiceStack.Auth.UserAuthDetails>();
-            DbConn.DropTable<ServiceStack.Auth.UserAuth>();
+            using (var conn = DbFactory.Open())
+            {
+                conn.DropTable<ServiceStack.Auth.UserAuthRole>();
+                conn.DropTable<ServiceStack.Auth.UserAuthDetails>();
+                conn.DropTable<ServiceStack.Auth.UserAuth>();
 
-            DbConn.CreateTable<ServiceStack.Auth.UserAuth>();
-            DbConn.CreateTable<ServiceStack.Auth.UserAuthDetails>();
-            DbConn.CreateTable<ServiceStack.Auth.UserAuthRole>();
+                conn.CreateTable<ServiceStack.Auth.UserAuth>();
+                conn.CreateTable<ServiceStack.Auth.UserAuthDetails>();
+                conn.CreateTable<ServiceStack.Auth.UserAuthRole>();
+            }
         }
 
         /// <summary>
@@ -195,7 +240,7 @@ namespace ServiceStack.Authentication.LightSpeedTests
         {
             // Init OrmLite and LightSpeed repository
             this.OrmLiteRepository = new OrmLiteAuthRepository(DbFactory);
-            this.LightSpeedRepository = new LightSpeedUserAuthRepository(AuthScope.Current);
+            this.LightSpeedRepository = new LightSpeedUserAuthRepository(this.UnitOfWork);
         }
     }
 }
