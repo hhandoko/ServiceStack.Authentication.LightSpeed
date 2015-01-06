@@ -1,5 +1,9 @@
-## 0.4 - In Progress
-  * TBA
+## 0.5 - In Progress
+  * *TBA*
+
+## 0.4 - <small>2015/01/06</small>
+  * Updated `CreateOrMergeAuthSession` implementation for ServiceStack v4.0.35 compatibility.
+  * Updated `IManageRoles` unit tests for ServiceStack v4.0.35 compatibility.
 
 ## 0.3 - <small>2014/08/06</small> 
   * Added `IManageRoles` unit tests.

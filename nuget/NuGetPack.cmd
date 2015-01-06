@@ -19,7 +19,7 @@ SET WorkingDir=
 SET NuGetDir=nuget
 SET OutputDir=nuget
 
-:: Could currently be in .nuget directory
+:: Could currently be in .nuget or nuget directory
 IF EXIST "%CD%\NuGet.exe" (
     CD ..
     GOTO :ArgsLoop
@@ -28,7 +28,6 @@ IF EXIST "%CD%\NuGet.exe" (
 :: Could currently be in nuget directory
 IF EXIST "%CD%\..\nuget\NuGet.exe" (
     CD ..
-    SET NuGetDir=nuget
     GOTO :ArgsLoop
 )
 
@@ -86,7 +85,7 @@ GOTO :PackMain
 
 
 :PackMain ----------------------------------------------------------------
-SET "Packages=YamNet.Client"
+SET "Packages=ServiceStack.Authentication.LightSpeed"
 
 :: Throw alert if Version Number is not defined.
 :: Otherwise pack a project if defined, or all project if not.

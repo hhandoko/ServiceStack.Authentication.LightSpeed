@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ServiceStack.Authentication.LightSpeed")]
+[assembly: AssemblyTitle("ServiceStack.Authentication.LightSpeed.Migration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ServiceStack.Authentication.LightSpeed")]
-[assembly: AssemblyProduct("ServiceStack.Authentication.LightSpeed")]
+[assembly: AssemblyProduct("ServiceStack.Authentication.LightSpeed.Migration")]
 [assembly: AssemblyCopyright("Copyright © ServiceStack.Authentication.LightSpeed contributors 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("df708135-1ebe-4a25-b326-4fd839fc015b")]
+[assembly: Guid("2b645459-8de9-43be-b5dd-c998f5cf0bab")]
 
 // Version information for an assembly consists of the following four values:
 //
