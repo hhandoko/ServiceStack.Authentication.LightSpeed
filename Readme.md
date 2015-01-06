@@ -73,7 +73,7 @@ this.LightSpeedRepository.AssignRoles(lightspeedUser, roles: new Collection<stri
 Please note that at this time, role addition and removal is only supported through the repository class. Running collection methods over the UserAuth's `Roles` and `Permissions` properties (e.g. `userAuth.Roles.Add(newRole)`) will not persist the changes.    
 
 ## Contributors
-Please refer to the following [page](/blob/master/Contributors.md) for a complete list of all contributors.
+Please refer to the following [page](/Contributors.md) for a complete list of all contributors.
 
 ## Contributing
 Pull requests shall be made against `develop` branch, which will be reviewed for merging into the `master` branch.

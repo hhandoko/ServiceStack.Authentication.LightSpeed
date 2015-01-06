@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Resources", "1 - Resources", "{A75110FA-FCD9-4D6D-A289-E6BD29947003}"
+	ProjectSection(SolutionItems) = preProject
+		Contributors.md = Contributors.md
+		Readme.md = Readme.md
+		ReleaseNotes.md = ReleaseNotes.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Sources", "2 - Sources", "{A5E233DE-AF97-4FF0-92BB-0129A6FEF283}"
 EndProject
@@ -20,6 +25,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Authentication.LightSpeedTests", "tests\ServiceStack.Authentication.LightSpeedTests\ServiceStack.Authentication.LightSpeedTests.csproj", "{0A191356-64D0-4178-B2DA-C0250585C1EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Authentication.LightSpeed.Migration", "src\ServiceStack.Authentication.LightSpeed.Migration\ServiceStack.Authentication.LightSpeed.Migration.csproj", "{0C506A08-23D4-40AB-A9A7-DF6BB014E443}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - NuGet", "0 - NuGet", "{9AA8A5F5-E1FB-4B16-9984-AAEC897A9EE0}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\NuGetCleanCache.cmd = nuget\NuGetCleanCache.cmd
+		nuget\NuGetPack.cmd = nuget\NuGetPack.cmd
+		nuget\readme.txt = nuget\readme.txt
+		nuget\ServiceStack.Authentication.LightSpeed.nuspec = nuget\ServiceStack.Authentication.LightSpeed.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
