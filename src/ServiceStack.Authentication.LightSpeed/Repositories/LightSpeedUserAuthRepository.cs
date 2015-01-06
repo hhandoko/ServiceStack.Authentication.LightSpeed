@@ -203,8 +203,8 @@ namespace ServiceStack.Authentication.LightSpeed
         /// </summary>
         /// <param name="authSession">The auth session.</param>
         /// <param name="tokens">The tokens.</param>
-        /// <returns>The <see cref="string"/>.</returns>
-        public string CreateOrMergeAuthSession(IAuthSession authSession, IAuthTokens tokens)
+        /// <returns>The <see cref="IUserAuthDetails"/>.</returns>
+        public IUserAuthDetails CreateOrMergeAuthSession(IAuthSession authSession, IAuthTokens tokens)
         {
             // Try and get from the UserAuth table
             var userAuth = (LightSpeed.UserAuth)this.GetUserAuth(authSession, tokens);
@@ -246,7 +246,7 @@ namespace ServiceStack.Authentication.LightSpeed
 
             this.unitOfWork.SaveChanges();
 
-            return oauthProvider.UserAuthId.ToString(CultureInfo.InvariantCulture);
+            return oauthProvider;
         }
 
         /// <summary>
